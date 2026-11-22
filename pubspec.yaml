@@ -1,0 +1,74 @@
+name: yamyam
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.1.0+2
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  http: ^1.6.0
+  uuid: ^4.5.1
+  device_info_plus: 10.1.2
+  package_info_plus: ^8.3.1
+  country_flags: ^4.1.2
+  flutter_vless: ^1.1.6
+  url_launcher: ^6.3.3
+  flutter_dotenv: ^6.0.1
+  video_player: ^2.11.1
+  webview_flutter: ^4.14.1
+  connectivity_plus: ^7.3.2
+  path_provider: ^2.1.6
+  image_picker: ^1.2.4
+  easy_localization: ^3.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  fonts:
+    - family: IRANYekan
+      fonts:
+        - asset: assets/fonts/IRANYekanWebThin.ttf
+          weight: 100
+        - asset: assets/fonts/IRANYekanWebLight.ttf
+          weight: 300
+        - asset: assets/fonts/IRANYekanWebRegular.ttf
+          weight: 400
+        - asset: assets/fonts/IRANYekanWebMedium.ttf
+          weight: 500
+        - asset: assets/fonts/IRANYekanWebBold.ttf
+          weight: 700
+        - asset: assets/fonts/IRANYekanWebExtraBlack.ttf
+          weight: 800
+    - family: IRANYekanXVF
+      fonts:
+        - asset: assets/fonts/IRANYekanXVF.ttf
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/images/logo.png"
+  windows:
+    generate: true
+    image_path: "assets/images/logo.png"
+    icon_size: 256
