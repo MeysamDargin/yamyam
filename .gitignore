@@ -50,3 +50,4 @@ windows/xray/
 android/build/
 .cursor/
 openapi.json
+dist/

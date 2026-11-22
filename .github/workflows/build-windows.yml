@@ -2,7 +2,11 @@ name: Build Windows
 on:
   push:
     branches: [main]
+    tags: ['v*']
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -17,7 +21,6 @@ jobs:
       - run: flutter config --enable-windows-desktop
       - run: flutter pub get
 
-      # اگر xray.exe را داخل ریپو نگذاشته‌ای، اینجا دانلود کن
       - name: Download Xray
         shell: pwsh
         run: |
@@ -27,7 +30,38 @@ jobs:
 
       - run: flutter build windows --release
 
+      - name: Verify bundle
+        shell: pwsh
+        run: |
+          Get-ChildItem -Recurse build/windows/x64/runner/Release | Select-Object -ExpandProperty FullName
+          if (-not (Get-ChildItem -Recurse build/windows/x64/runner/Release -Filter xray.exe)) {
+            Write-Warning "xray.exe NOT found in release bundle"
+          }
+
+      - name: Get version
+        id: ver
+        shell: pwsh
+        run: |
+          $v = (Select-String -Path pubspec.yaml -Pattern '^version:\s*([0-9]+\.[0-9]+\.[0-9]+)').Matches.Groups[1].Value
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "/DMyAppVersion=${{ steps.ver.outputs.version }}" "windows\installer\setup.iss"
+
       - uses: actions/upload-artifact@v4
         with:
-          name: windows-release
-          path: build/windows/x64/runner/Release/
+          name: windows-installer
+          path: dist/*.exe
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.exe
+          generate_release_notes: true
